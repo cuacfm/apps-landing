@@ -76,7 +76,7 @@
       --bg:     #FAF9F6;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: 'Public Sans', sans-serif;
@@ -493,7 +493,7 @@
       inset: 0;
       background: #0d0d0d;
       border-radius: 32px;
-      overflow: visible;
+      overflow: hidden;
     }
 
     .pc-track {
@@ -1056,6 +1056,14 @@
       font-size: 1.1rem;
       padding: 16px 34px;
     }
+
+    @media (max-width: 560px) {
+      #heroSection .panel-title { font-size: 1.95rem; }
+      #heroSection .panel-body  { font-size: 0.95rem; margin-bottom: 16px; }
+      #heroSection .panel-btn   { font-size: 0.78rem; padding: 8px 14px; }
+      #heroSection .panel-inner { gap: 16px; }
+      .hero-mockup-wrap         { padding-top: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -1092,9 +1100,14 @@
         <p class="panel-body reveal reveal-delay-3">
           Ouve a CUAC FM em direto, descobre podcasts únicos e conecta com uma emissora feita pela cidadania. Sem publicidade. Onde quiseres, quando quiseres.
         </p>
-        <a href="#descarga" class="panel-btn btn-dark reveal reveal-delay-4">
-          Descarregar grátis →
-        </a>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a href="#descarga" class="panel-btn btn-dark reveal reveal-delay-4">
+            Descarregar grátis →
+          </a>
+          <a href="#directo" class="panel-btn btn-dark reveal reveal-delay-5">
+            Saber mais
+          </a>
+        </div>
       </div>
       <div class="hero-mockup-wrap">
         <div class="phone-wrapper no-float">
@@ -1107,7 +1120,7 @@
   </section>
 
   <!-- ── PANEL 2: DIRECTO (azul) ── -->
-  <section class="panel bg-blue" style="z-index:2; position:relative;">
+  <section class="panel bg-blue" id="directo" style="z-index:2; position:relative;">
     <div class="panel-inner reverse">
       <div class="panel-text">
         <h2 class="panel-title reveal reveal-delay-2">
@@ -1423,15 +1436,19 @@
     const reviewsBg = document.getElementById('reviewsBg');
     if (reviewsBg) {
       const isMobile = window.innerWidth < 600;
-      const cols = isMobile ? 20 : 32;
-      const rows = isMobile ? 28 : 24;
+      const cols = isMobile ? 14 : 28;
+      const rows = isMobile ? 18 : 20;
+      const jx   = isMobile ? 4 : 2;
+      const jy   = isMobile ? 4 : 3;
       let html = '';
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          const size = isMobile ? 8 + Math.random() * 10 : 10 + Math.random() * 24;
-          const op   = (0.05 + Math.random() * 0.15).toFixed(2);
-          const x    = (c / (cols - 1)) * 100;
-          const y    = (r / (rows - 1)) * 100;
+          const size = isMobile
+            ? (Math.random() < 0.15 ? 16 + Math.random() * 8 : 4 + Math.random() * 8)
+            : 10 + Math.random() * 22;
+          const op   = (0.06 + Math.random() * 0.14).toFixed(2);
+          const x    = (c / (cols - 1)) * 100 + (Math.random() - 0.5) * jx;
+          const y    = (r / (rows - 1)) * 100 + (Math.random() - 0.5) * jy;
           html += `<svg viewBox="0 0 24 24" style="position:absolute;width:${size}px;height:${size}px;left:${x}%;top:${y}%;transform:translate(-50%,-50%);opacity:${op};fill:#FDCC03;" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
         }
       }
